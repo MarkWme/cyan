@@ -5,12 +5,17 @@ import (
 	"time"
 	"fmt"
 	"io/ioutil"
+	"os"
 )
 
 func main() {
+
+	apiServer := os.Getenv("API_SERVER")
+	getVersionURL := apiServer + "/api/getVersion"
+	fmt.Println("Starting to poll " + getVersionURL)
 	for {
 		time.Sleep(1 * time.Second)
-		response, err := http.Get("http://localhost:3000/api/getVersion")
+		response, err := http.Get(getVersionURL)
 		if err != nil {
 			fmt.Printf("HTTP request failed %s\n", err)
 		} else {

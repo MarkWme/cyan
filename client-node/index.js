@@ -1,7 +1,11 @@
 const superagent = require('superagent');
 
+const getVersionURL = process.env.API_SERVER + "/api/getVersion";
+
+console.log("Starting to poll " + getVersionURL);
+
 setInterval(() => {
-    superagent.get('http://localhost:3000/api/getVersion').end((err,res)=>{
+    superagent.get(getVersionURL).end((err,res)=>{
         try {
             console.log(res.text);
         } catch (err) {
