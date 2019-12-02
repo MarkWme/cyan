@@ -14,7 +14,7 @@ variables:
   imageRepository: 'cyanserver'
   containerRegistry: 'xcreuwcyan.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/server/Dockerfile'
-  tag: '$(Build.BuildId)'
+  tag: '$(Build.SourceVersion)'
   
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
