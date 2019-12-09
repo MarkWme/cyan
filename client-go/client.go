@@ -12,7 +12,7 @@ func main() {
 
 	apiServer := os.Getenv("API_SERVER")
 	getVersionURL := apiServer + "/api/getVersion"
-	log.Println("Starting to poll " + getVersionURL)
+	log.Printf("Starting to poll " + getVersionURL)
 	for {
 		time.Sleep(1 * time.Second)
 		response, err := http.Get(getVersionURL)
@@ -20,7 +20,7 @@ func main() {
 			log.Printf("HTTP request failed %s\n", err)
 		} else {
 			data, _ := ioutil.ReadAll(response.Body)
-			log.Println(string(data))
+			log.Printf(string(data))
 		}
 	}
 }
