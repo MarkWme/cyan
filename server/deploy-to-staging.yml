@@ -41,6 +41,7 @@ stages:
       runOnce:
         deploy:
           steps:
+          - checkout: self
           - task: HelmInstaller@1
             inputs:
               helmVersionToInstall: 'latest'
