@@ -8,10 +8,10 @@ import (
 
 type version struct {
 	Application string
-	Version string
+	Version     string
 }
 
-func getVersion(w http.ResponseWriter, r *http.Request){
+func getVersion(w http.ResponseWriter, r *http.Request) {
 	log.Println("getVersion endpoint")
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(getVersionValue())
@@ -24,6 +24,6 @@ func main() {
 	log.Fatal(http.ListenAndServe(":3000", nil))
 }
 
-func getVersionValue()(version) {
-	return version{"Cyan API Server", "1.0.0"}
+func getVersionValue() version {
+	return version{"Cyan API Server", "1.0.1"}
 }
