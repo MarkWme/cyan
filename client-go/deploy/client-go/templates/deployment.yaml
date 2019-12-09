@@ -33,7 +33,7 @@ spec:
               protocol: TCP
           env:
           - name: API_SERVER
-            value: "http://cyan-api-server:3000"
+            value: "{{ .Values.apiServerURL }}"
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

@@ -8,6 +8,8 @@ image:
   repository: xcreuwcyan.azurecr.io/clientgo
   pullPolicy: IfNotPresent
 
+apiServerURL: "http://cyan-api-server:3000"
+
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
