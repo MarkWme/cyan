@@ -8,7 +8,7 @@ apiVersion: extensions/v1beta1
 {{- end }}
 kind: Ingress
 metadata:
-  name: {{ $fullName }}
+  name: {{ $fullName }}-staging
   labels:
     {{- include "server.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
@@ -27,15 +27,10 @@ spec:
   {{- end }}
 {{- end }}
   rules:
-  {{- range .Values.ingress.hosts }}
-    - host: {{ .host | quote }}
-      http:
-        paths:
-        {{- range .paths }}
-          - path: {{ . }}
-            backend:
-              serviceName: {{ $fullName }}
-              servicePort: {{ $svcPort }}
-        {{- end }}
-  {{- end }}
+  - host: staging.51.105.197.234.nip.io
+    http:
+      paths:
+      - backend:
+          serviceName: {{ $fullName }}-staging
+          servicePort: {{ $svcPort }}
 {{- end }}
