@@ -28,30 +28,8 @@ variables:
   
 
 stages:
-- stage: Build
-  displayName: Build stage
-  jobs:  
-  - job: Build
-    displayName: Build
-    pool:
-      vmImage: $(vmImageName)
-    steps:
-    - task: Docker@2
-      displayName: Build and push an image to container registry
-      inputs:
-        command: buildAndPush
-        repository: $(imageRepository)
-        dockerfile: $(dockerfilePath)
-        containerRegistry: $(dockerRegistryServiceConnection)
-        tags: |
-          $(tag)
-          
-    - upload: manifests
-      artifact: manifests
-
 - stage: Deploy
-  displayName: Deploy stage
-  dependsOn: Build
+  displayName: Deploy to Staging
 
   jobs:
   - deployment: Deploy
@@ -63,22 +41,19 @@ stages:
       runOnce:
         deploy:
           steps:
-          - task: KubernetesManifest@0
-            displayName: Create imagePullSecret
+          - task: HelmInstaller@1
             inputs:
-              action: createSecret
-              secretName: $(imagePullSecret)
-              dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
-              
-          - task: KubernetesManifest@0
-            displayName: Deploy to Kubernetes cluster
+              helmVersionToInstall: 'latest'
+          - task: HelmDeploy@0
             inputs:
-              action: deploy
-              manifests: |
-                $(Pipeline.Workspace)/manifests/deployment.yml
-                $(Pipeline.Workspace)/manifests/service.yml
-              imagePullSecrets: |
-                $(imagePullSecret)
-              containers: |
-                $(containerRegistry)/$(imageRepository):$(tag)
+              connectionType: 'Azure Resource Manager'
+              azureSubscription: 'Microsoft Azure(808121c2-95b0-4e15-8dbc-cb6de76a956a)'
+              azureResourceGroup: 'x-rg-euw-aks-cyan'
+              kubernetesCluster: 'x-ks-euw-cyan'
+              namespace: 'default'
+              command: 'upgrade'
+              chartType: 'FilePath'
+              chartPath: 'server/deploy/server'
+              releaseName: 'cyan-api-server'
+              overrideValues: 'productionSlot=blue'
 
