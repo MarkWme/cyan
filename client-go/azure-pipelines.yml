@@ -8,8 +8,8 @@ trigger:
     - master
   paths:
     include:
-      - client-go/*
-      
+    - client-go/*
+
 resources:
 - repo: self
 
