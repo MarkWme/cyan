@@ -51,18 +51,12 @@ stages:
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
               inlineScript: |
-                pwd
-                ls
-          - task: HelmDeploy@0
-            inputs:
-              connectionType: 'Azure Resource Manager'
-              azureSubscription: 'Microsoft Azure(808121c2-95b0-4e15-8dbc-cb6de76a956a)'
-              azureResourceGroup: 'x-rg-euw-aks-cyan'
-              kubernetesCluster: 'x-ks-euw-cyan'
-              namespace: 'default'
-              command: 'upgrade'
-              chartType: 'FilePath'
-              chartPath: '$(Build.SourcesDirectory)/server/deploy/server'
-              releaseName: 'cyan-api-server'
-              overrideValues: 'productionSlot=blue'
-
+                #!/bin/sh -x
+                
+                productionSlot=$(helm get values cyan-api-server | awk '/productionSlot/{print $2}')
+                if [ $productionSlot = "blue" ]; then
+                    stagingSlot="green"
+                else
+                    stagingSlot="blue"
+                fi
+                helm upgrade cyan-api-server server --set $stagingSlot.enabled=true,$stagingSlot.tag=$stagingTag --reuse-values
