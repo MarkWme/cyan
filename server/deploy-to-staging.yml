@@ -49,4 +49,4 @@ stages:
                 else
                     stagingSlot="blue"
                 fi
-                helm upgrade cyan-api-server server --set $stagingSlot.enabled=true,$stagingSlot.tag=$stagingTag --reuse-values
+                helm upgrade cyan-api-server server/deploy/server --set $stagingSlot.enabled=true,$stagingSlot.tag=$stagingTag --reuse-values
