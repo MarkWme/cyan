@@ -25,5 +25,5 @@ func main() {
 }
 
 func getVersionValue() version {
-	return version{"Cyan API Server", "1.0.1"}
+	return version{"Cyan API Server", "1.0.2"}
 }
