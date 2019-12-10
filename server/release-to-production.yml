@@ -1,0 +1,52 @@
+trigger: none
+
+resources:
+- repo: self
+
+variables:
+
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: '8e95fe58-6c0c-40ce-bddb-bec48f60c17e'
+  imageRepository: 'cyanserver'
+  containerRegistry: 'xcreuwcyan.azurecr.io'
+  dockerfilePath: '**/Dockerfile'
+  tag: '$(Build.BuildId)'
+  imagePullSecret: 'xcreuwcyan294322a3-auth'
+
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+  
+
+stages:
+- stage: Release
+  displayName: Release to Production
+
+  jobs:
+  - deployment: Switch
+    displayName: Switch production and staging slots
+    pool:
+      vmImage: $(vmImageName)
+    environment: 'MarkWmecyan.default'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - checkout: self
+          - task: HelmInstaller@1
+            inputs:
+              helmVersionToInstall: 'latest'
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: 'Microsoft Azure(808121c2-95b0-4e15-8dbc-cb6de76a956a)'
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                set -x
+                az aks get-credentials -g x-rg-euw-aks-cyan -n x-ks-euw-cyan
+                productionSlot=$(helm get values cyan-api-server | awk '/productionSlot/{print $2}')
+                if [ $productionSlot == "blue" ]; then
+                    newProductionSlot="green"
+                else
+                    newProductionSlot="blue"
+                fi
+                helm upgrade cyan-api-server server/deploy/server --set $productionSlot=$newProductionSlot --reuse-values
