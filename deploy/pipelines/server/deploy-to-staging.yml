@@ -5,18 +5,9 @@ resources:
 
 variables:
 
-  # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: '8e95fe58-6c0c-40ce-bddb-bec48f60c17e'
-  imageRepository: 'cyanserver'
-  containerRegistry: 'xcreuwcyan.azurecr.io'
-  dockerfilePath: '**/Dockerfile'
-  tag: '$(Build.BuildId)'
-  imagePullSecret: 'xcreuwcyan294322a3-auth'
-
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
   
-
 stages:
 - stage: Deploy
   displayName: Deploy to Staging
@@ -49,4 +40,4 @@ stages:
                 else
                     stagingSlot="blue"
                 fi
-                helm upgrade cyan-api-server server/deploy/server --set $stagingSlot.enabled=true,$stagingSlot.tag=$STAGINGTAG --reuse-values
+                helm upgrade cyan-api-server deploy/charts/server --set $stagingSlot.enabled=true,$stagingSlot.tag=$STAGINGTAG --reuse-values
