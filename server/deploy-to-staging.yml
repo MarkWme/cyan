@@ -1,0 +1,68 @@
+# Deploy to Azure Kubernetes Service
+# Build and push image to Azure Container Registry; Deploy to Azure Kubernetes Service
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - server/*
+
+resources:
+- repo: self
+
+variables:
+
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: '8e95fe58-6c0c-40ce-bddb-bec48f60c17e'
+  imageRepository: 'cyanserver'
+  containerRegistry: 'xcreuwcyan.azurecr.io'
+  dockerfilePath: '**/Dockerfile'
+  tag: '$(Build.BuildId)'
+  imagePullSecret: 'xcreuwcyan294322a3-auth'
+
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+  
+
+stages:
+- stage: Deploy
+  displayName: Deploy to Staging
+
+  jobs:
+  - deployment: Deploy
+    displayName: Deploy
+    pool:
+      vmImage: $(vmImageName)
+    environment: 'MarkWmecyan.default'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - checkout: self
+          - task: HelmInstaller@1
+            inputs:
+              helmVersionToInstall: 'latest'
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: 'Microsoft Azure(808121c2-95b0-4e15-8dbc-cb6de76a956a)'
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                pwd
+                ls
+          - task: HelmDeploy@0
+            inputs:
+              connectionType: 'Azure Resource Manager'
+              azureSubscription: 'Microsoft Azure(808121c2-95b0-4e15-8dbc-cb6de76a956a)'
+              azureResourceGroup: 'x-rg-euw-aks-cyan'
+              kubernetesCluster: 'x-ks-euw-cyan'
+              namespace: 'default'
+              command: 'upgrade'
+              chartType: 'FilePath'
+              chartPath: '$(Build.SourcesDirectory)/server/deploy/server'
+              releaseName: 'cyan-api-server'
+              overrideValues: 'productionSlot=blue'
+
