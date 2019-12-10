@@ -6,6 +6,14 @@ replicaCount: 10
 
 productionSlot: blue
 
+blue:
+  enabled: true
+  tag: latest
+
+green:
+  enabled: true
+  tag: latest
+
 image:
   repository: xcreuwcyan.azurecr.io/cyanserver
   pullPolicy: IfNotPresent
