@@ -42,6 +42,7 @@ stages:
               scriptLocation: 'inlineScript'
               inlineScript: |
                 set -x
+                env
                 az aks get-credentials -g x-rg-euw-aks-cyan -n x-ks-euw-cyan
                 productionSlot=$(helm get values cyan-api-server | awk '/productionSlot/{print $2}')
                 if [ $productionSlot == "blue" ]; then
