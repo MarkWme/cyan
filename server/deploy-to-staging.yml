@@ -40,11 +40,11 @@ stages:
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
               inlineScript: |
+                az aks get-credentials -g x-rg-euw-aks-cyan -n x-ks-euw-cyan
                 productionSlot=$(helm get values cyan-api-server | awk '/productionSlot/{print $2}')
                 if [ $productionSlot == "blue" ]; then
                     stagingSlot="green"
                 else
                     stagingSlot="blue"
                 fi
-                az aks get-credentials -g x-rg-euw-cyan -n x-rg-euw-cyan
                 helm upgrade cyan-api-server server --set $stagingSlot.enabled=true,$stagingSlot.tag=$stagingTag --reuse-values
