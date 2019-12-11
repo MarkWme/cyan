@@ -17,7 +17,7 @@ metadata:
   {{- end }}
 spec:
   rules:
-  - host: 51.105.197.234.nip.io
+  - host: {{ .Values.ingress.hostName }}
     http:
       paths:
       - backend:
