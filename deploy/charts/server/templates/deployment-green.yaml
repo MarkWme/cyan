@@ -19,10 +19,6 @@ spec:
         {{- include "server.selectorLabels" . | nindent 8 }}
         slot: green
     spec:
-    {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-    {{- end }}
       serviceAccountName: {{ include "server.serviceAccountName" . }}
       containers:
         - name: {{ .Chart.Name }}
