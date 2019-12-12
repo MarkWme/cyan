@@ -20,6 +20,7 @@ spec:
         slot: blue
     spec:
       serviceAccountName: {{ include "server.serviceAccountName" . }}
+      terminationGracePeriodSeconds: 60
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.blue.tag }}"

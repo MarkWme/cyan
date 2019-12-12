@@ -13,17 +13,15 @@ type version struct {
 }
 
 func getVersion(w http.ResponseWriter, r *http.Request) {
-	log.Println("getVersion endpoint")
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(getVersionValue())
-	log.Println(getVersionValue())
+	log.Println("getVersion endpoint:", getVersionValue())
 }
 
 func podTerminate(w http.ResponseWriter, r *http.Request) {
-	log.Println("podTerminate endpoint")
-	log.Println("Waiting 10 seconds ...")
-	time.Sleep(10 * time.Second)
-	log.Println("Done")
+	log.Println("podTerminate endpoint: Starting 30 second waiting period ...")
+	time.Sleep(30 * time.Second)
+	log.Println("Waiting period complete")
 }
 
 func main() {
