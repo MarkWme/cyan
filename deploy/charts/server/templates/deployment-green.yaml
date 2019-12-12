@@ -24,6 +24,11 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.green.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          lifecycle: 
+            preStop:
+              httpGet:
+                path: /api/podTerminate
+                port: 3000
           ports:
             - name: http
               containerPort: 3000
