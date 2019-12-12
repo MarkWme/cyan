@@ -1,0 +1,39 @@
+replicaCount: 10
+
+productionSlot: blue
+
+blue:
+  enabled: true
+  tag: latest
+
+green:
+  enabled: true
+  tag: latest
+
+image:
+  repository: xcreuwcyan.azurecr.io/cyanserver
+  pullPolicy: IfNotPresent
+
+serviceAccount:
+  create: true
+  name:
+
+service:
+  type: ClusterIP
+  port: 3000
+
+ingress:
+  enabled: true
+  canary: false
+  canaryweight: 10
+
+  nginx:
+    hostName: 40.74.43.138.nip.io
+  
+  annotations: 
+    kubernetes.io/ingress.class: nginx
+    
+  hosts:
+    - backend:
+        serviceName: cyan-api-server
+        servicePort: 3000

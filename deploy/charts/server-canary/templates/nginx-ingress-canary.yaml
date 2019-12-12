@@ -1,0 +1,26 @@
+{{- if .Values.ingress.canary -}}
+{{- $fullName := include "server.fullname" . -}}
+{{- $svcPort := .Values.service.port -}}
+{{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
+apiVersion: extensions/v1beta1
+{{- end }}
+kind: Ingress
+metadata:
+  name: nginx-{{ $fullName }}-staging
+  labels:
+    {{- include "server.labels" . | nindent 4 }}
+  annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/canary: true
+      nginx.ingress.kubernetes.io/canary-weight: {{ .Values.ingress.canaryweight }}
+spec:
+  rules:
+  - host: staging.{{ .Values.ingress.nginx.hostName }}
+    http:
+      paths:
+      - backend:
+          serviceName: {{ $fullName }}-canary
+          servicePort: {{ $svcPort }}
+{{- end }}
