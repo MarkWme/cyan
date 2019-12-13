@@ -39,27 +39,13 @@ stages:
                 set -x
                 az aks get-credentials -g $AKS_RESOURCE_GROUP -n $AKS_NAME
                 #
-                # Check if already deployed. If so, we can upgrade, if not we need
-                # to install fresh. We don't use the --install option for a Helm
-                # upgrade as if we're installing fresh we need to define some user
-                # values - specifically, the productionSlot value needs to be
-                # specifically set
-                #
-                if [ $(helm ls -n $KUBERNETES_NAMESPACE -f $HELM_RELEASE_NAME -q | wc -l) -eq 1 ]; then
-                  #
-                  # Get current production slot value, then configure the
-                  # script to deploy to the other slot
-                  #                
-                  productionSlot=$(helm get values -n $KUBERNETES_NAMESPACE $HELM_RELEASE_NAME | awk '/productionSlot/{print $2}')
-                  if [ $productionSlot == "blue" ]; then
-                      stagingSlot="green"
-                  else
-                      stagingSlot="blue"
-                  fi
-                  helm upgrade -n $KUBERNETES_NAMESPACE $HELM_RELEASE_NAME deploy/charts/server-canary --set $stagingSlot.enabled=true,$stagingSlot.tag=$STAGING_TAG --reuse-values
+                # Get current production slot value, then configure the
+                # script to deploy to the other slot
+                #                
+                productionSlot=$(helm get values -n $KUBERNETES_NAMESPACE ${HELM_RELEASE_NAME_STUB}-api-server | awk '/productionSlot/{print $2}')
+                if [ $productionSlot == "blue" ]; then
+                    canarySlot="green"
                 else
-                  #
-                  # New installation
-                  #
-                  helm install -n $KUBERNETES_NAMESPACE $HELM_RELEASE_NAME deploy/charts/server-canary --set blue.tag=$PRODUCTION_TAG,green.tag=$CANARY_TAG,productionSlot=blue
+                    canarySlot="blue"
                 fi
+                helm upgrade -n $KUBERNETES_NAMESPACE ${HELM_RELEASE_NAME_STUB}-api-server deploy/charts/server-canary --set $canarySlot.enabled=true,$canarySlot.tag=$CANARY_TAG --reuse-values
