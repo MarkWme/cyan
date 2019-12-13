@@ -21,6 +21,6 @@ spec:
     http:
       paths:
       - backend:
-          serviceName: {{ $fullName }}-canary
+          serviceName: {{ $fullName }}-canary.{{ .Release.Namespace }}
           servicePort: {{ $svcPort }}
 {{- end }}

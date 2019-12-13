@@ -19,6 +19,6 @@ spec:
     http:
       paths:
       - backend:
-          serviceName: {{ $fullName }}-production
+          serviceName: {{ $fullName }}-production.{{ .Release.Namespace }}
           servicePort: {{ $svcPort }}
 {{- end }}
