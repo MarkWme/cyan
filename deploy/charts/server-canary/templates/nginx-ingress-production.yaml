@@ -8,7 +8,7 @@ apiVersion: extensions/v1beta1
 {{- end }}
 kind: Ingress
 metadata:
-  name: nginx-{{ $fullName }}-production
+  name: nginx-{{ $fullName }}
   labels:
     {{- include "server.labels" . | nindent 4 }}
   annotations:
