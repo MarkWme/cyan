@@ -46,4 +46,3 @@ stages:
                 # Deploy client applications to blue / green deployments
                 #
                 helm install -n $KUBERNETES_NAMESPACE ${HELM_RELEASE_NAME_STUB}-client-go-production deploy/charts/client-go --set apiServerURL=http://$API_SERVER
-                helm install -n $KUBERNETES_NAMESPACE ${HELM_RELEASE_NAME_STUB}-client-go-staging deploy/charts/client-go --set apiServerURL=http://staging-$API_SERVER
