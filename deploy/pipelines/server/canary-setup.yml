@@ -41,9 +41,9 @@ stages:
                 #
                 # Deploy server applications to blue / green environments
                 #
-                helm install -n $KUBERNETES_NAMESPACE $HELM_RELEASE_NAME deploy/charts/server-canary --set blue.tag=$PRODUCTION_TAG,green.tag=$CANARY_TAG,productionSlot=blue
+                helm install -n $KUBERNETES_NAMESPACE ${HELM_RELEASE_NAME_STUB}-api-server deploy/charts/server-canary --set blue.tag=$PRODUCTION_TAG,green.tag=$CANARY_TAG,productionSlot=blue
                 #
                 # Deploy client applications to blue / green deployments
                 #
-                helm install -n $KUBERNETES_NAMESPACE $HELM_RELEASE_NAME deploy/charts/client-go --set apiServerURL=http://$API_SERVER --reuse-values
-                helm upgrade --install -n $KUBERNETES_NAMESPACE ${HELM_RELEASE_NAME}-staging deploy/charts/client-go --set apiServerURL=http://staging-$API_SERVER --reuse-values
+                helm install -n $KUBERNETES_NAMESPACE ${HELM_RELEASE_NAME_STUB}-client-go-production deploy/charts/client-go --set apiServerURL=http://$API_SERVER
+                helm install -n $KUBERNETES_NAMESPACE ${HELM_RELEASE_NAME_STUB}-client-go-staging deploy/charts/client-go --set apiServerURL=http://staging-$API_SERVER
