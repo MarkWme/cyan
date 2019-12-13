@@ -1,0 +1,61 @@
+trigger: none
+
+resources:
+- repo: self
+
+variables:
+
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+  
+stages:
+- stage: Deploy
+  displayName: Deploy to Canary
+
+  jobs:
+  - deployment: Deploy
+    displayName: Deploy
+    pool:
+      vmImage: $(vmImageName)
+    environment: 'MarkWmecyan.default'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - checkout: self
+          - task: HelmInstaller@1
+            inputs:
+              helmVersionToInstall: 'latest'
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: 'Microsoft Azure(808121c2-95b0-4e15-8dbc-cb6de76a956a)'
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                set -x
+                az aks get-credentials -g $AKS_RESOURCE_GROUP -n $AKS_NAME
+                #
+                # Check if already deployed. If so, we can upgrade, if not we need
+                # to install fresh. We don't use the --install option for a Helm
+                # upgrade as if we're installing fresh we need to define some user
+                # values - specifically, the productionSlot value needs to be
+                # specifically set
+                #
+                if [ $(helm ls -n $KUBERNETES_NAMESPACE -f $HELM_RELEASE_NAME -q | wc -l) -eq 1 ]; then
+                  #
+                  # Get current production slot value, then configure the
+                  # script to deploy to the other slot
+                  #                
+                  productionSlot=$(helm get values -n $KUBERNETES_NAMESPACE $HELM_RELEASE_NAME | awk '/productionSlot/{print $2}')
+                  if [ $productionSlot == "blue" ]; then
+                      stagingSlot="green"
+                  else
+                      stagingSlot="blue"
+                  fi
+                  helm upgrade -n $KUBERNETES_NAMESPACE $HELM_RELEASE_NAME deploy/charts/server-canary --set $stagingSlot.enabled=true,$stagingSlot.tag=$STAGING_TAG --reuse-values
+                else
+                  #
+                  # New installation
+                  #
+                  helm install -n $KUBERNETES_NAMESPACE $HELM_RELEASE_NAME deploy/charts/server-canary --set blue.tag=$PRODUCTION_TAG,green.tag=$CANARY_TAG,productionSlot=blue
+                fi
