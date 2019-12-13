@@ -57,5 +57,5 @@ stages:
                   #
                   # New installation
                   #
-                  helm install -n KUBERNETES_NAMESPACE $HELM_RELEASE_NAME deploy/charts/server --set blue.enabled=true,blue.tag=$STAGING_TAG,productionSlot=blue --reuse-values
+                  helm install -n KUBERNETES_NAMESPACE $HELM_RELEASE_NAME deploy/charts/server --set blue.enabled=true,blue.tag=$STAGING_TAG,productionSlot=blue
                 fi
