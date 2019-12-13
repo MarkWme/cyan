@@ -41,4 +41,4 @@ stages:
                 # values - specifically, the productionSlot value needs to be
                 # specifically set
                 #
-                helm upgrade -n $KUBERNETES_NAMESPACE ${HELM_RELEASE_NAME_STUB}-api-server deploy/charts/server-canary --set ingress.canary=true,ingress.canaryweight=$CANARY_WEIGHT --reuse-values
+                helm upgrade -n $KUBERNETES_NAMESPACE ${HELM_RELEASE_NAME_STUB}-api-server deploy/charts/server-canary --set ingress.canary=$CANARY_ENABLED,ingress.canaryweight=$CANARY_WEIGHT --reuse-values
