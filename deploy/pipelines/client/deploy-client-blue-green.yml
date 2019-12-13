@@ -34,5 +34,6 @@ stages:
               inlineScript: |
                 set -x
                 az aks get-credentials -g $AKS_RESOURCE_GROUP -n $AKS_NAME
-                helm install -n $KUBERNETES_NAMESPACE $HELM_RELEASE_NAME deploy/charts/client-go --set apiServerURL=$API_SERVER_URL
+                helm install -n $KUBERNETES_NAMESPACE $HELM_RELEASE_NAME_PRODUCTION deploy/charts/client-go --set apiServerURL=$API_SERVER_URL_PRODUCTION
+                helm install -n $KUBERNETES_NAMESPACE $HELM_RELEASE_NAME_STAGING deploy/charts/client-go --set apiServerURL=$API_SERVER_URL_STAGING
 
