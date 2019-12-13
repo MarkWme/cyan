@@ -49,4 +49,4 @@ stages:
                 else
                     newProductionSlot="blue"
                 fi
-                helm upgrade cyan-api-server deploy/charts/server --set productionSlot=$newProductionSlot --reuse-values
+                helm upgrade  -n $KUBERNETES_NAMESPACE $HELM_RELEASE_NAME deploy/charts/server --set productionSlot=$newProductionSlot --reuse-values
