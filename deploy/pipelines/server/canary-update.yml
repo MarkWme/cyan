@@ -1,3 +1,7 @@
+#
+# Setup environment for demonstrating canary deployments
+# using nginx canary annotations.
+#
 trigger: none
 
 resources:
