@@ -37,5 +37,5 @@ stages:
               inlineScript: |
                 set -x
                 az aks get-credentials -g $AKS_RESOURCE_GROUP -n $AKS_NAME
-                helm uninstall -n $KUBERNETES_NAMESPACE ${HELM_RELEASE_NAME_STUB}-api-server deploy/charts/server-canary
-                helm uninstall -n $KUBERNETES_NAMESPACE ${HELM_RELEASE_NAME_STUB}-client-go-production deploy/charts/client-go
+                helm uninstall -n $KUBERNETES_NAMESPACE ${HELM_RELEASE_NAME_STUB}-api-server
+                helm uninstall -n $KUBERNETES_NAMESPACE ${HELM_RELEASE_NAME_STUB}-client-go-production
