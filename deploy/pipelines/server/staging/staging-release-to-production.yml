@@ -43,10 +43,10 @@ stages:
               inlineScript: |
                 set -x
                 az aks get-credentials -g x-rg-euw-aks-cyan -n x-ks-euw-cyan
-                productionSlot=$(helm get values -n $KUBERNETES_NAMESPACE ${HELM_RELEASE_NAME}-api-server | awk '/productionSlot/{print $2}')
+                productionSlot=$(helm get values -n $KUBERNETES_NAMESPACE ${HELM_RELEASE_NAME_STUB}-api-server | awk '/productionSlot/{print $2}')
                 if [ $productionSlot == "blue" ]; then
                     newProductionSlot="green"
                 else
                     newProductionSlot="blue"
                 fi
-                helm upgrade -n $KUBERNETES_NAMESPACE ${HELM_RELEASE_NAME}-api-server deploy/charts/server --set productionSlot=$newProductionSlot --reuse-values
+                helm upgrade -n $KUBERNETES_NAMESPACE ${HELM_RELEASE_NAME_STUB}-api-server deploy/charts/server --set productionSlot=$newProductionSlot --reuse-values
