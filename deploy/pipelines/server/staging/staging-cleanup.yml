@@ -1,0 +1,41 @@
+trigger: none
+
+resources:
+- repo: self
+
+variables:
+
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+  
+stages:
+- stage: Deploy
+  displayName: Setup Staging Blue / Green Environment
+
+  jobs:
+  - deployment: Deploy
+    displayName: Deploy
+    pool:
+      vmImage: $(vmImageName)
+    environment: 'MarkWmecyan.default'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - checkout: self
+          - task: HelmInstaller@1
+            inputs:
+              helmVersionToInstall: 'latest'
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: 'Microsoft Azure(808121c2-95b0-4e15-8dbc-cb6de76a956a)'
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                set -x
+                az aks get-credentials -g $AKS_RESOURCE_GROUP -n $AKS_NAME
+                helm uninstall -n $KUBERNETES_NAMESPACE ${HELM_RELEASE_NAME_STUB}-api-server deploy/charts/server
+                helm uninstall -n $KUBERNETES_NAMESPACE ${HELM_RELEASE_NAME_STUB}-client-go-nginx-production deploy/charts/client-go
+                helm uninstall -n $KUBERNETES_NAMESPACE ${HELM_RELEASE_NAME_STUB}-client-go-nginx-staging deploy/charts/client-go
+                helm uninstall -n $KUBERNETES_NAMESPACE ${HELM_RELEASE_NAME_STUB}-client-go-agic-production deploy/charts/client-go
+                helm uninstall -n $KUBERNETES_NAMESPACE ${HELM_RELEASE_NAME_STUB}-client-go-agic-staging deploy/charts/client-go
