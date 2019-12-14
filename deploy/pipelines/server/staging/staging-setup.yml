@@ -41,5 +41,7 @@ stages:
                 #
                 # Deploy client applications for production and staging
                 #
-                helm install -n $KUBERNETES_NAMESPACE ${HELM_RELEASE_NAME_STUB}-client-go-production deploy/charts/client-go --set apiServerURL=http://$API_SERVER
-                helm install -n $KUBERNETES_NAMESPACE ${HELM_RELEASE_NAME_STUB}-client-go-staging deploy/charts/client-go --set apiServerURL=http://staging-$API_SERVER
+                helm install -n $KUBERNETES_NAMESPACE ${HELM_RELEASE_NAME_STUB}-client-go-nginx-production deploy/charts/client-go --set apiServerURL=http://$API_SERVER_NGINX
+                helm install -n $KUBERNETES_NAMESPACE ${HELM_RELEASE_NAME_STUB}-client-go-nginx-staging deploy/charts/client-go --set apiServerURL=http://staging-$API_SERVER_NGINX
+                helm install -n $KUBERNETES_NAMESPACE ${HELM_RELEASE_NAME_STUB}-client-go-agic-production deploy/charts/client-go --set apiServerURL=http://$API_SERVER_AGIC
+                helm install -n $KUBERNETES_NAMESPACE ${HELM_RELEASE_NAME_STUB}-client-go-agic-staging deploy/charts/client-go --set apiServerURL=http://staging-$API_SERVER_AGIC
