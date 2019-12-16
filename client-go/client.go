@@ -5,16 +5,18 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 )
 
 func main() {
 
 	apiServer := os.Getenv("API_SERVER")
+	requestsPerSecond, _ := strconv.Atoi(os.Getenv("REQUESTS_PER_SECOND"))
 	getVersionURL := apiServer + "/api/getVersion"
 	log.Printf("Starting to poll " + getVersionURL)
 	for {
-		time.Sleep(1 * time.Second)
+		time.Sleep(time.Duration(1/requestsPerSecond) * time.Second)
 		response, err := http.Get(getVersionURL)
 		if err != nil {
 			log.Printf("HTTP request failed %s\n", err)

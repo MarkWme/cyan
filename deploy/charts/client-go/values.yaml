@@ -9,6 +9,7 @@ image:
   pullPolicy: IfNotPresent
 
 apiServerURL: "http://cyan-api-server:3000"
+requestsPerSecond: "10"
 
 imagePullSecrets: []
 nameOverride: ""

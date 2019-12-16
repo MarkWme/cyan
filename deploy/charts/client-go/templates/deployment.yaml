@@ -34,6 +34,8 @@ spec:
           env:
           - name: API_SERVER
             value: "{{ .Values.apiServerURL }}"
+          - name: REQUESTS_PER_SECOND
+            value: "{{ .Values.requestsPerSecond }}"
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
