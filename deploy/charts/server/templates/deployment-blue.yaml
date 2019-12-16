@@ -36,10 +36,10 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /api/getVersion
+              path: /api/podReady
               port: http
           readinessProbe:
             httpGet:
-              path: /api/getVersion
+              path: /api/podReady
               port: http
 {{ end }}
