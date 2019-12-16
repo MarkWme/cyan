@@ -12,11 +12,12 @@ import (
 func main() {
 
 	apiServer := os.Getenv("API_SERVER")
-	requestsPerSecond, _ := strconv.Atoi(os.Getenv("REQUESTS_PER_SECOND"))
+	var requestsPerSecond int = 1
+	requestsPerSecond, _ = strconv.Atoi(os.Getenv("REQUESTS_PER_SECOND"))
 	getVersionURL := apiServer + "/api/getVersion"
-	log.Printf("Starting to poll " + getVersionURL)
+	log.Printf("Starting to poll %s at %d requests per second", getVersionURL, requestsPerSecond)
 	for {
-		time.Sleep(time.Duration(1/requestsPerSecond) * time.Second)
+		time.Sleep(time.Duration(1000/requestsPerSecond) * time.Millisecond)
 		response, err := http.Get(getVersionURL)
 		if err != nil {
 			log.Printf("HTTP request failed %s\n", err)
