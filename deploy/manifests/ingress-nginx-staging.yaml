@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: nginx-cyan-api-server-staging
+  annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/service-upstream: "true"
+
+spec:
+  rules:
+  - host: staging.40.74.43.138.nip.io
+    http:
+      paths:
+      - backend:
+          serviceName: cyan-api-server-staging
+          servicePort: 3000

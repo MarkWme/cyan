@@ -1,0 +1,14 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: nginx-cyan-api-server-production
+  annotations:
+      kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - host: 40.74.43.138.nip.io
+    http:
+      paths:
+      - backend:
+          serviceName: cyan-api-server-production
+          servicePort: 3000

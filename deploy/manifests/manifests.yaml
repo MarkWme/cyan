@@ -1,0 +1,262 @@
+---
+# Source: server/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cyan-api-server
+  labels:
+
+    helm.sh/chart: server-0.0.1
+    app.kubernetes.io/name: server
+    app.kubernetes.io/instance: cyan-api-server
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: server/templates/service-production.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: cyan-api-server-production
+  labels:
+    helm.sh/chart: server-0.0.1
+    app.kubernetes.io/name: server
+    app.kubernetes.io/instance: cyan-api-server
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3000
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: server
+    app.kubernetes.io/instance: cyan-api-server
+    slot: blue
+---
+# Source: server/templates/service-staging.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: cyan-api-server-staging
+  labels:
+    helm.sh/chart: server-0.0.1
+    app.kubernetes.io/name: server
+    app.kubernetes.io/instance: cyan-api-server
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3000
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: server
+    app.kubernetes.io/instance: cyan-api-server
+    slot: green
+---
+# Source: server/templates/deployment-blue.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cyan-api-server-blue
+  labels:
+    helm.sh/chart: server-0.0.1
+    app.kubernetes.io/name: server
+    app.kubernetes.io/instance: cyan-api-server
+    app.kubernetes.io/managed-by: Helm
+    slot: blue
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: server
+      app.kubernetes.io/instance: cyan-api-server
+      slot: blue
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: server
+        app.kubernetes.io/instance: cyan-api-server
+        slot: blue
+    spec:
+      serviceAccountName: cyan-api-server
+      terminationGracePeriodSeconds: 60
+      containers:
+        - name: server
+          image: "xcreuwcyan.azurecr.io/cyanserver:latest"
+          imagePullPolicy: IfNotPresent
+          lifecycle: 
+            preStop:
+              httpGet:
+                path: /api/podTerminate
+                port: 3000
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /api/podReady
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /api/podReady
+              port: http
+---
+# Source: server/templates/deployment-green.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cyan-api-server-green
+  labels:
+    helm.sh/chart: server-0.0.1
+    app.kubernetes.io/name: server
+    app.kubernetes.io/instance: cyan-api-server
+    app.kubernetes.io/managed-by: Helm
+    slot: green
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: server
+      app.kubernetes.io/instance: cyan-api-server
+      slot: green
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: server
+        app.kubernetes.io/instance: cyan-api-server
+        slot: green
+    spec:
+      serviceAccountName: cyan-api-server
+      terminationGracePeriodSeconds: 60
+      containers:
+        - name: server
+          image: "xcreuwcyan.azurecr.io/cyanserver:latest"
+          imagePullPolicy: IfNotPresent
+          lifecycle: 
+            preStop:
+              httpGet:
+                path: /api/podTerminate
+                port: 3000
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /api/podReady
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /api/podReady
+              port: http
+---
+# Source: server/templates/agic-ingress-production.yaml
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: agic-cyan-api-server-production
+  labels:
+    helm.sh/chart: server-0.0.1
+    app.kubernetes.io/name: server
+    app.kubernetes.io/instance: cyan-api-server
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+      kubernetes.io/ingress.class: azure/application-gateway
+spec:
+  rules:
+  - host: 51.105.197.234.nip.io
+    http:
+      paths:
+      - backend:
+          serviceName: cyan-api-server-production
+          servicePort: 3000
+---
+# Source: server/templates/agic-ingress-staging.yaml
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: agic-cyan-api-server-staging
+  labels:
+    helm.sh/chart: server-0.0.1
+    app.kubernetes.io/name: server
+    app.kubernetes.io/instance: cyan-api-server
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+      kubernetes.io/ingress.class: azure/application-gateway
+spec:
+  rules:
+  - host: staging.51.105.197.234.nip.io
+    http:
+      paths:
+      - backend:
+          serviceName: cyan-api-server-staging
+          servicePort: 3000
+---
+# Source: server/templates/nginx-ingress-production.yaml
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: nginx-cyan-api-server-production
+  labels:
+    helm.sh/chart: server-0.0.1
+    app.kubernetes.io/name: server
+    app.kubernetes.io/instance: cyan-api-server
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/service-upstream: "true"
+spec:
+  rules:
+  - host: 40.74.43.138.nip.io
+    http:
+      paths:
+      - backend:
+          serviceName: cyan-api-server-production
+          servicePort: 3000
+---
+# Source: server/templates/nginx-ingress-staging.yaml
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: nginx-cyan-api-server-staging
+  labels:
+    helm.sh/chart: server-0.0.1
+    app.kubernetes.io/name: server
+    app.kubernetes.io/instance: cyan-api-server
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/service-upstream: "true"
+
+spec:
+  rules:
+  - host: staging.40.74.43.138.nip.io
+    http:
+      paths:
+      - backend:
+          serviceName: cyan-api-server-staging
+          servicePort: 3000
+---
+# Source: server/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "cyan-api-server-test-connection"
+  labels:
+
+    helm.sh/chart: server-0.0.1
+    app.kubernetes.io/name: server
+    app.kubernetes.io/instance: cyan-api-server
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args:  ['cyan-api-server:3000']
+  restartPolicy: Never

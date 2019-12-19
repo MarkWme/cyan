@@ -1,0 +1,14 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: agic-cyan-api-server-production
+  annotations:
+      kubernetes.io/ingress.class: azure/application-gateway
+spec:
+  rules:
+  - host: 51.105.197.234.nip.io
+    http:
+      paths:
+      - backend:
+          serviceName: cyan-api-server-production
+          servicePort: 3000
