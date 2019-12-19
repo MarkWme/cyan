@@ -23,7 +23,7 @@ func getVersion(w http.ResponseWriter, r *http.Request) {
 func podTerminate(w http.ResponseWriter, r *http.Request) {
 	log.Println("podTerminate endpoint: Starting 30 second waiting period ...")
 	ready = false
-	time.Sleep(30 * time.Second)
+	time.Sleep(15 * time.Second)
 	log.Println("Waiting period complete")
 }
 
@@ -47,5 +47,5 @@ func main() {
 }
 
 func getVersionValue() version {
-	return version{"Cyan API Server", "1.0.13"}
+	return version{"Cyan API Server", "1.0.14"}
 }
