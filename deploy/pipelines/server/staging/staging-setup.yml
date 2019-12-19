@@ -37,7 +37,7 @@ stages:
                 # Deploy server applications to blue / green environments
                 #
                 az aks get-credentials -g $AKS_RESOURCE_GROUP -n $AKS_NAME
-                helm install -n $KUBERNETES_NAMESPACE ${HELM_RELEASE_NAME_STUB}-api-server deploy/charts/server --set blue.tag=$PRODUCTION_TAG,green.tag=$STAGING_TAG,productionSlot=blue
+                helm install -n $KUBERNETES_NAMESPACE ${HELM_RELEASE_NAME_STUB}-api-server deploy/charts/server --set blue.tag=$PRODUCTION_TAG,green.tag=$STAGING_TAG,productionSlot=blue,ingress.agic.enabled=$AGIC_ENABLED,ingress.nginx.enabled=$NGINX_ENABLED
                 #
                 # Deploy client applications for production and staging
                 #
