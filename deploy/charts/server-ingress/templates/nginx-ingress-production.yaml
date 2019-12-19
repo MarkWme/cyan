@@ -1,0 +1,25 @@
+{{- if .Values.ingress.enabled -}}
+{{- $fullName := include "server.fullname" . -}}
+{{- $svcPort := .Values.service.port -}}
+{{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
+apiVersion: extensions/v1beta1
+{{- end }}
+kind: Ingress
+metadata:
+  name: nginx-{{ $fullName }}-production
+  labels:
+    {{- include "server.labels" . | nindent 4 }}
+  annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/service-upstream: "true"
+spec:
+  rules:
+  - host: {{ .Values.ingress.nginx.hostName }}
+    http:
+      paths:
+      - backend:
+          serviceName: {{ $fullName }}-production
+          servicePort: {{ $svcPort }}
+{{- end }}
