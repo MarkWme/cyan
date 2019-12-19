@@ -20,7 +20,7 @@ spec:
       terminationGracePeriodSeconds: 60
       containers:
         - name: server
-          image: "xcreuwcyan.azurecr.io/cyanserver:282"
+          image: "xcreuwcyan.azurecr.io/cyanserver:309"
           imagePullPolicy: Always
           lifecycle: 
             preStop:
@@ -33,9 +33,9 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /api/getVersion
+              path: /api/podReady
               port: http
           readinessProbe:
             httpGet:
-              path: /api/getVersion
+              path: /api/podReady
               port: http

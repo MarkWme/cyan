@@ -23,7 +23,7 @@ func getVersion(w http.ResponseWriter, r *http.Request) {
 func podTerminate(w http.ResponseWriter, r *http.Request) {
 	log.Println("podTerminate endpoint: Starting 30 second waiting period ...")
 	ready = false
-	time.Sleep(15 * time.Second)
+	time.Sleep(30 * time.Second)
 	log.Println("Waiting period complete")
 }
 
