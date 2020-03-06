@@ -17,7 +17,7 @@ variables:
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: 'e0bdf106-899b-4550-9020-7c73b7d21c6e'
   imageRepository: 'clientgo'
-  containerRegistry: 'xcreuwcyan.azurecr.io'
+  containerRegistry: 'pcreuwcore.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/client-go/Dockerfile'
   tag: '$(Build.BuildId)'
   

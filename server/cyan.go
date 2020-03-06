@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -42,10 +43,19 @@ func main() {
 	http.HandleFunc("/api/getVersion", getVersion)
 	http.HandleFunc("/api/podTerminate", podTerminate)
 	http.HandleFunc("/api/podReady", podReady)
+	srv := &http.Server{
+		Addr:              ":3000",
+		ReadTimeout:       1 * time.Second,
+		WriteTimeout:      1 * time.Second,
+		IdleTimeout:       30 * time.Second,
+		ReadHeaderTimeout: 2 * time.Second,
+	}
 	log.Println("Starting HTTP server on port 3000")
-	log.Fatal(http.ListenAndServe(":3000", nil))
+	if err := srv.ListenAndServe(); err != nil {
+		fmt.Printf("Server failed: %s\n", err)
+	}
 }
 
 func getVersionValue() version {
-	return version{"Cyan API Server", "1.0.14"}
+	return version{"Cyan API Server", "1.1.0"}
 }

@@ -11,8 +11,8 @@ green:
   tag: latest
 
 image:
-  repository: xcreuwcyan.azurecr.io/cyanserver
-  pullPolicy: IfNotPresent
+  repository: pcreuwcore.azurecr.io/simpleapi
+  pullPolicy: Always
 
 serviceAccount:
   create: true
@@ -25,16 +25,12 @@ service:
 ingress:
   agic:
     enabled: true
-    hostName: 51.105.197.234.nip.io
-    annotations: 
-      kubernetes.io/ingress.class: nginx
+    hostName: 51.105.210.199.nip.io
   nginx:
-    enabled: true
-    hostName: 40.74.43.138.nip.io
-    annotations: 
-      kubernetes.io/ingress.class: azure/application-gateway
+    enabled: false
+    hostName: 51.105.108.158.nip.io
        
   hosts:
     - backend:
-        serviceName: cyan-api-server
+        serviceName: simple-api-server
         servicePort: 3000
