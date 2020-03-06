@@ -13,13 +13,9 @@ stages:
   displayName: Deploy Go client app
 
   jobs:
-  - deployment: Deploy
+  - job: Deploy
     displayName: Deploy
     pool:
       vmImage: $(vmImageName)
-    environment: 'Something.namespace'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - checkout: self
+    steps:
+    - checkout: self
