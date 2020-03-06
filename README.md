@@ -16,3 +16,6 @@ Create an "Azure Resource Manager" service connection of type "Service Principal
 ContainerRegistryConnection
 Create a "Docker Registry" service connection of type "Azure Container Registry" to the Azure Subscription and Azure Container Registry that you want to use.
 
+PRODUCTION_TAG
+STAGING_TAG
+
