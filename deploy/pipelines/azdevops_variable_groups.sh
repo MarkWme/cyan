@@ -2,6 +2,14 @@
 #
 # Set up common variables used across the pipelines
 #
+DEPLOYMENT_NAME=cyan
+AKS_NAME=p-ks-euw-aks
+AKS_RESOURCE_GROUP=p-rg-euw-core
+ACR_NAME=pcreuwcore
+ACR_RESOURCE_GROUP=p-rg-euw-core
+API_SERVER_URL_PRODUCTION=http://51.105.197.234.nip.io
+API_SERVER_URL_STAGING=http://staging.51.105.197.234.nip.io
+#
 # This uses the Azure DevOps extension for the Azure CLI
 # The following command installs the extension
 #
@@ -20,4 +28,4 @@ az devops configure --defaults project=cyan
 # Create variable group
 # Replace the values with those for your configuration
 #
-az pipelines variable-group create --authorize true --name cyan --variables aks_name=p-ks-euw-aks aks_resource_group=p-rg-euw-core api_server_url_production=http://51.105.197.234.nip.io api_server_url_staging=http://staging.51.105.197.234.nip.io helm_release_name_production=cyan-client-go helm_release_name_staging=cyan-client-go-staging kubernetes_namespace=cyan
+az pipelines variable-group create --authorize true --name cyan --variables aks_name=$AKS_NAME aks_resource_group=$AKS_RESOURCE_GROUP acr_name=$ACR_NAME acr_resource_group=$ACR_RESOURCE_GROUP api_server_url_production=$API_SERVER_URL_PRODUCTION api_server_url_staging=$API_SERVER_URL_STAGING deployment_name=$DEPLOYMENT_NAME
