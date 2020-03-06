@@ -7,7 +7,8 @@ variables:
 - group: cyan
 
   # Agent VM image name
-  vmImageName: 'ubuntu-latest'
+  name: vmImageName
+  value: 'ubuntu-latest'
   
 stages:
 - stage: Deploy

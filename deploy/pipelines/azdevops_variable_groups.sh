@@ -20,4 +20,4 @@ az devops configure --defaults project=cyan
 # Create variable group
 # Replace the values with those for your configuration
 #
-az pipelines variable-group create --name cyan --variables aks_name=p-ks-euw-aks aks_resource_group=p-rg-euw-core api_server_url_production=http://51.105.197.234.nip.io api_server_url_staging=http://staging.51.105.197.234.nip.io helm_release_name_production=cyan-client-go helm_release_name_staging=cyan-client-go-staging kubernetes_namespace=cyan
+az pipelines variable-group create --authorize true --name cyan --variables aks_name=p-ks-euw-aks aks_resource_group=p-rg-euw-core api_server_url_production=http://51.105.197.234.nip.io api_server_url_staging=http://staging.51.105.197.234.nip.io helm_release_name_production=cyan-client-go helm_release_name_staging=cyan-client-go-staging kubernetes_namespace=cyan
