@@ -4,7 +4,8 @@ resources:
 - repo: self
 
 variables:
-- group: cyan
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
   
 stages:
 - stage: Deploy
@@ -14,7 +15,7 @@ stages:
   - deployment: Deploy
     displayName: Deploy
     pool:
-      vmImage: 'ubuntu-latest'
+      vmImage: $(vmImageName)
     environment: 'MarkWmecyan.default'
     strategy:
       runOnce:
