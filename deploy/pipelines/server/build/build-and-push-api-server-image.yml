@@ -16,10 +16,10 @@ resources:
 variables:
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: 'ContainerRegistryConnection'
-  imageRepository: 'cyanserver'
+  imageRepository: 'simpleapi'
   containerRegistry: 'pcreuwcore.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/server/Dockerfile'
-  tag: '$(Build.BuildId)'
+  tag: '$(Build.SourceVersion)'
   
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
