@@ -29,7 +29,7 @@ stages:
         scriptLocation: 'inlineScript'
         inlineScript: |
           set -x
-          az aks get-credentials -g x-rg-euw-aks-cyan -n x-ks-euw-cyan
+          az aks get-credentials -g $AKS_RESOURCE_GROUP -n $AKS_NAME
           productionSlot=$(helm get values -n $DEPLOYMENT_NAME ${DEPLOYMENT_NAME}-api-server | awk '/productionSlot/{print $2}')
           if [ $productionSlot == "blue" ]; then
               newProductionSlot="green"
