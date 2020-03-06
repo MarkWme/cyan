@@ -4,7 +4,10 @@
 # https://aka.ms/yaml
 
 trigger:
-- master
+- none
+
+resources:
+- repo: self
 
 pool:
   vmImage: 'ubuntu-latest'
