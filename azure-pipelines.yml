@@ -4,9 +4,9 @@ resources:
 - repo: self
 
 variables:
-
-  # Agent VM image name
-  vmImageName: 'ubuntu-latest'
+- group: cyan
+- name: vmImageName
+  value: 'ubuntu-latest'
 
 stages:
 - stage: Deploy
