@@ -7,22 +7,18 @@ variables:
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
-  
-stages:
-- stage: Deploy
-  displayName: Deploy Go client app
 
-  jobs:
-  - deployment: Deploy
-    displayName: Deploy
-    pool:
-      vmImage: $(vmImageName)
-    environment: 'MarkWmecyan.default'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - checkout: self
-          - task: HelmInstaller@1
-            inputs:
-              helmVersionToInstall: 'latest'
+jobs:
+- deployment: Deploy
+  displayName: Deploy
+  pool:
+    vmImage: $(vmImageName)
+  environment: 'MarkWmecyan.default'
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - checkout: self
+        - task: HelmInstaller@1
+          inputs:
+            helmVersionToInstall: 'latest'
