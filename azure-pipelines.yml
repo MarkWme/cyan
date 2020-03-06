@@ -7,8 +7,6 @@ variables:
 - group: cyan
 - name: vmImageName
   value: 'ubuntu-latest'
-- name: something
-  value: format('Hello {0} {1}', 'John', $(aks_resource_group))
 
 stages:
 - stage: Deploy
@@ -32,8 +30,6 @@ stages:
         inlineScript: |
           set -x
           env
-          echo $AKS_RESOURCEGROUP
-          echo $SOMETHING
           az aks get-credentials -g $AKS_RESOURCE_GROUP -n $AKS_NAME
-          helm upgrade --install -n $KUBERNETES_NAMESPACE $HELM_RELEASE_NAME_PRODUCTION deploy/charts/client-go --set apiServerURL=$api_server_url_production --reuse-values
-          helm upgrade --install -n $kubernetes_namespace $helm_release_name_staging deploy/charts/client-go --set apiServerURL=$api_server_url_staging --reuse-values
+          helm upgrade --install -n $DEPLOYMENT_NAME ${DEPLOYMENTNAME}_client_go_production deploy/charts/client-go --set apiServerURL=$API_SERVER_URL_PRODUCTION --reuse-values
+          helm upgrade --install -n $DEPLOYMENT_NAME ${DEPLOYMENTNAME}_client_go_staging deploy/charts/client-go --set apiServerURL=$API_SERVER_URL_STAGING --reuse-values
