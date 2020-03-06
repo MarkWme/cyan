@@ -3,3 +3,6 @@ trigger: none
 resources:
 - repo: self
 
+stages:
+- stage: Deploy
+  displayName: Deploy Go client app
