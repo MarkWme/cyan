@@ -1,25 +1,40 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
-trigger:
-- none
-
-variables:
-- group: cyan
+trigger: none
 
 resources:
 - repo: self
 
-pool:
-  vmImage: 'ubuntu-latest'
+variables:
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+  
+stages:
+- stage: Deploy
+  displayName: Deploy Go client app
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+  jobs:
+  - deployment: Deploy
+    displayName: Deploy
+    pool:
+      vmImage: $(vmImageName)
+    environment: 'MarkWmecyan.default'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - checkout: self
+          - task: HelmInstaller@1
+            inputs:
+              helmVersionToInstall: 'latest'
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: 'AzureServiceConnection'
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                set -x
+                az aks get-credentials -g $aks_resource_group -n $aks_name
+                helm upgrade --install -n $kubernetes_namespace $helm_release_name_production deploy/charts/client-go --set apiServerURL=$api_server_url_production --reuse-values
+                helm upgrade --install -n $kubernetes_namespace $helm_release_name_staging deploy/charts/client-go --set apiServerURL=$api_server_url_staging --reuse-values
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+
+
