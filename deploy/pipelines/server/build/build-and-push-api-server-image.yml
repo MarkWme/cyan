@@ -15,7 +15,7 @@ resources:
 
 variables:
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: '018b5bac-dea1-4047-b71d-f0e1c4a691b3'
+  dockerRegistryServiceConnection: 'ContainerRegistryConnection'
   imageRepository: 'cyanserver'
   containerRegistry: 'pcreuwcore.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/server/Dockerfile'

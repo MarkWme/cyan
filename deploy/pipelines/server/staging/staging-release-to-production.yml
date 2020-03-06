@@ -37,7 +37,7 @@ stages:
               helmVersionToInstall: 'latest'
           - task: AzureCLI@2
             inputs:
-              azureSubscription: 'Microsoft Azure(808121c2-95b0-4e15-8dbc-cb6de76a956a)'
+              azureSubscription: 'AzureServiceConnection'
               scriptType: 'bash'
               scriptLocation: 'inlineScript'
               inlineScript: |
