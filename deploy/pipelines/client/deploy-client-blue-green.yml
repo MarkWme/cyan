@@ -5,9 +5,7 @@ resources:
 
 variables:
 - group: cyan
-
-  # Agent VM image name
-  name: vmImageName
+- name: vmImageName
   value: 'ubuntu-latest'
   
 stages:
