@@ -8,17 +8,3 @@ variables:
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
 
-jobs:
-- deployment: Deploy
-  displayName: Deploy
-  pool:
-    vmImage: $(vmImageName)
-  environment: 'MarkWmecyan.default'
-  strategy:
-    runOnce:
-      deploy:
-        steps:
-        - checkout: self
-        - task: HelmInstaller@1
-          inputs:
-            helmVersionToInstall: 'latest'
