@@ -23,19 +23,3 @@ stages:
         deploy:
           steps:
           - checkout: self
-          - task: HelmInstaller@1
-            inputs:
-              helmVersionToInstall: 'latest'
-          - task: AzureCLI@2
-            inputs:
-              azureSubscription: 'AzureServiceConnection'
-              scriptType: 'bash'
-              scriptLocation: 'inlineScript'
-              inlineScript: |
-                set -x
-                az aks get-credentials -g $aks_resource_group -n $aks_name
-                helm upgrade --install -n $kubernetes_namespace $helm_release_name_production deploy/charts/client-go --set apiServerURL=$api_server_url_production --reuse-values
-                helm upgrade --install -n $kubernetes_namespace $helm_release_name_staging deploy/charts/client-go --set apiServerURL=$api_server_url_staging --reuse-values
-
-
-
