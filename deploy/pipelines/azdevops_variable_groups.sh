@@ -7,8 +7,8 @@ AKS_NAME=p-ks-euw-aks
 AKS_RESOURCE_GROUP=p-rg-euw-core
 ACR_NAME=pcreuwcore
 ACR_RESOURCE_GROUP=p-rg-euw-core
-API_SERVER_URL_PRODUCTION=http://51.105.197.234.nip.io
-API_SERVER_URL_STAGING=http://staging.51.105.197.234.nip.io
+API_SERVER_URL_PRODUCTION=http://51.105.210.199.nip.io
+API_SERVER_URL_STAGING=http://staging.51.105.210.199.nip.io
 #
 # This uses the Azure DevOps extension for the Azure CLI
 # The following command installs the extension

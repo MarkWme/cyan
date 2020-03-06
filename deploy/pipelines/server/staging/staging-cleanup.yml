@@ -4,38 +4,32 @@ resources:
 - repo: self
 
 variables:
-
-  # Agent VM image name
-  vmImageName: 'ubuntu-latest'
+- group: cyan
+- name: vmImageName
+  value: 'ubuntu-latest'
   
 stages:
 - stage: Deploy
   displayName: Setup Staging Blue / Green Environment
 
   jobs:
-  - deployment: Deploy
+  - job: Deploy
     displayName: Deploy
     pool:
       vmImage: $(vmImageName)
-    environment: 'MarkWmecyan.default'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - checkout: self
-          - task: HelmInstaller@1
-            inputs:
-              helmVersionToInstall: 'latest'
-          - task: AzureCLI@2
-            inputs:
-              azureSubscription: 'AzureServiceConnection'
-              scriptType: 'bash'
-              scriptLocation: 'inlineScript'
-              inlineScript: |
-                set -x
-                az aks get-credentials -g $AKS_RESOURCE_GROUP -n $AKS_NAME
-                helm uninstall -n $KUBERNETES_NAMESPACE ${HELM_RELEASE_NAME_STUB}-api-server
-                helm uninstall -n $KUBERNETES_NAMESPACE ${HELM_RELEASE_NAME_STUB}-client-go-nginx-production
-                helm uninstall -n $KUBERNETES_NAMESPACE ${HELM_RELEASE_NAME_STUB}-client-go-nginx-staging
-                helm uninstall -n $KUBERNETES_NAMESPACE ${HELM_RELEASE_NAME_STUB}-client-go-agic-production
-                helm uninstall -n $KUBERNETES_NAMESPACE ${HELM_RELEASE_NAME_STUB}-client-go-agic-staging
+    steps:
+    - checkout: self
+    - task: HelmInstaller@1
+      inputs:
+        helmVersionToInstall: 'latest'
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: 'AzureServiceConnection'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          set -x
+          az aks get-credentials -g $AKS_RESOURCE_GROUP -n $AKS_NAME
+          helm uninstall -n $DEPLOYMENT_NAME ${DEPLOYMENT_NAME}-api-server
+          helm uninstall -n $DEPLOYMENT_NAME ${DEPLOYMENT_NAME}-client-go-production
+          helm uninstall -n $DEPLOYMENT_NAME ${DEPLOYMENT_NAME}-client-go-staging
