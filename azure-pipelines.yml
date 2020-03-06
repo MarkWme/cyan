@@ -31,5 +31,5 @@ stages:
           set -x
           env
           az aks get-credentials -g $AKS_RESOURCE_GROUP -n $AKS_NAME
-          helm upgrade --install -n $DEPLOYMENT_NAME ${DEPLOYMENTNAME}_client_go_production deploy/charts/client-go --set apiServerURL=$API_SERVER_URL_PRODUCTION --reuse-values
-          helm upgrade --install -n $DEPLOYMENT_NAME ${DEPLOYMENTNAME}_client_go_staging deploy/charts/client-go --set apiServerURL=$API_SERVER_URL_STAGING --reuse-values
+          helm upgrade --install -n $DEPLOYMENT_NAME ${DEPLOYMENT_NAME}_client_go_production deploy/charts/client-go --set apiServerURL=$API_SERVER_URL_PRODUCTION --reuse-values
+          helm upgrade --install -n $DEPLOYMENT_NAME ${DEPLOYMENT_NAME}_client_go_staging deploy/charts/client-go --set apiServerURL=$API_SERVER_URL_STAGING --reuse-values
