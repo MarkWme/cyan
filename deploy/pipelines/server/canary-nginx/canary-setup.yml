@@ -37,7 +37,7 @@ stages:
           #
           # Deploy server applications to blue / green environments
           #
-          helm install -n $DEPLOYMENT_NAME ${DEPLOYMENT_NAME}-api-server deploy/charts/server-canary --set blue.tag=$PRODUCTION_TAG,green.tag=$CANARY_TAG,productionSlot=blue,image.repository=${ACR_NAME}.azurecr.io/simpleapi
+          helm install -n $DEPLOYMENT_NAME ${DEPLOYMENT_NAME}-api-server deploy/charts/server-canary --set blue.tag=$PRODUCTION_TAG,green.tag=$CANARY_TAG,ingress.hostName=$API_SERVER,productionSlot=blue,image.repository=${ACR_NAME}.azurecr.io/simpleapi
           #
           # Deploy client applications to blue / green deployments
           #

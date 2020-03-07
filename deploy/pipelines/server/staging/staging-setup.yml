@@ -33,7 +33,7 @@ stages:
           # Deploy server applications to blue / green environments
           #
           az aks get-credentials -g $AKS_RESOURCE_GROUP -n $AKS_NAME
-          helm install -n $DEPLOYMENT_NAME ${DEPLOYMENT_NAME}-api-server deploy/charts/server --set blue.tag=$PRODUCTION_TAG,green.tag=$STAGING_TAG,productionSlot=blue,image.repository=${ACR_NAME}.azurecr.io/simpleapi,ingress.type=$INGRESS_TYPE,ingress.hostname=$API_SERVER
+          helm install -n $DEPLOYMENT_NAME ${DEPLOYMENT_NAME}-api-server deploy/charts/server --set blue.tag=$PRODUCTION_TAG,green.tag=$STAGING_TAG,productionSlot=blue,image.repository=${ACR_NAME}.azurecr.io/simpleapi,ingress.type=$INGRESS_TYPE,ingress.hostName=$API_SERVER
           #
           # Deploy client applications for production and staging
           #
