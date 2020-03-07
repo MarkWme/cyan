@@ -21,8 +21,4 @@ PRODUCTION_TAG
 STAGING_TAG
 
 Status:
-Remove separate AGIC/NGINX ingress templates from Helm chart
-Use single Ingress template
-Change pipelines use only hostname and build URL
-Change pipelines / variables to select ingress type
 Add HAProxy, Traefik?

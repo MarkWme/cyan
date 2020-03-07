@@ -26,9 +26,7 @@ ingress:
   enabled: true
   canary: false
   canaryweight: 10
-
-  nginx:
-    hostName: 40.74.43.138.nip.io
+  hostName: 40.74.43.138.nip.io
   
   annotations: 
     kubernetes.io/ingress.class: nginx
