@@ -7,9 +7,8 @@ AKS_NAME=p-ks-euw-aks
 AKS_RESOURCE_GROUP=p-rg-euw-core
 ACR_NAME=pcreuwcore
 ACR_RESOURCE_GROUP=p-rg-euw-core
-API_SERVER_URL_PRODUCTION=http://51.105.210.199.nip.io
-API_SERVER_URL_STAGING=http://staging.51.105.210.199.nip.io
-API_SERVER_URL_CANARY=http://51.105.108.158.nip.io
+API_SERVER=51.105.210.199.nip.io
+INGRESS_TYPE=agic
 #
 # This uses the Azure DevOps extension for the Azure CLI
 # The following command installs the extension
@@ -29,5 +28,4 @@ az devops configure --defaults project=cyan
 # Create variable group
 # Replace the values with those for your configuration
 #
-az pipelines variable-group create --authorize true --name cyan --variables aks_name=$AKS_NAME aks_resource_group=$AKS_RESOURCE_GROUP acr_name=$ACR_NAME acr_resource_group=$ACR_RESOURCE_GROUP api_server_url_production=$API_SERVER_URL_PRODUCTION api_server_url_staging=$API_SERVER_URL_STAGING 
-api_server_url_canary=$API_SERVER_URL_CANARY deployment_name=$DEPLOYMENT_NAME skipComponentGovernanceDetection=true -o table
+az pipelines variable-group create --authorize true --name cyan --variables aks_name=$AKS_NAME aks_resource_group=$AKS_RESOURCE_GROUP acr_name=$ACR_NAME acr_resource_group=$ACR_RESOURCE_GROUP api_server=$API_SERVER deployment_name=$DEPLOYMENT_NAME ingress_type=$INGRESS_TYPE skipComponentGovernanceDetection=true -o table

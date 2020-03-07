@@ -1,4 +1,3 @@
-{{- if .Values.ingress.agic.enabled -}}
 {{- $fullName := include "server.fullname" . -}}
 {{- $svcPort := .Values.service.port -}}
 {{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
@@ -8,17 +7,20 @@ apiVersion: extensions/v1beta1
 {{- end }}
 kind: Ingress
 metadata:
-  name: agic-{{ $fullName }}-production
+  name: {{ .Values.ingress.type }}-{{ $fullName }}-staging
   labels:
     {{- include "server.labels" . | nindent 4 }}
   annotations:
+{{- if eq Values.ingress.type "agic" -}}
       kubernetes.io/ingress.class: azure/application-gateway
+{{- else -}}
+      kubernetes.io/ingress.class: nginx
+{{- end }}
 spec:
   rules:
-  - host: {{ .Values.ingress.agic.hostName }}
+  - host: staging.{{ .Values.ingress.hostName }}
     http:
       paths:
       - backend:
-          serviceName: {{ $fullName }}-production
+          serviceName: {{ $fullName }}-staging
           servicePort: {{ $svcPort }}
-{{- end }}

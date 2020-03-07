@@ -23,12 +23,8 @@ service:
   port: 3000
 
 ingress:
-  agic:
-    enabled: true
-    hostName: 51.105.210.199.nip.io
-  nginx:
-    enabled: false
-    hostName: 51.105.108.158.nip.io
+  type: agic
+  hostName: 51.105.210.199.nip.io
        
   hosts:
     - backend:

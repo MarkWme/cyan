@@ -1,5 +1,5 @@
 apiVersion: v2
 name: server
 description: Deploy a simple API application with services and ingress to demonstrate blue / green deployments
-version: 0.0.1
+version: 1.0.0
 type: application
