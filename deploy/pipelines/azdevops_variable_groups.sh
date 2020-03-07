@@ -29,4 +29,5 @@ az devops configure --defaults project=cyan
 # Create variable group
 # Replace the values with those for your configuration
 #
-az pipelines variable-group create --authorize true --name cyan --variables aks_name=$AKS_NAME aks_resource_group=$AKS_RESOURCE_GROUP acr_name=$ACR_NAME acr_resource_group=$ACR_RESOURCE_GROUP api_server_url_production=$API_SERVER_URL_PRODUCTION api_server_url_staging=$API_SERVER_URL_STAGING deployment_name=$DEPLOYMENT_NAME
+az pipelines variable-group create --authorize true --name cyan --variables aks_name=$AKS_NAME aks_resource_group=$AKS_RESOURCE_GROUP acr_name=$ACR_NAME acr_resource_group=$ACR_RESOURCE_GROUP api_server_url_production=$API_SERVER_URL_PRODUCTION api_server_url_staging=$API_SERVER_URL_STAGING 
+api_server_url_canary=$API_SERVER_URL_CANARY deployment_name=$DEPLOYMENT_NAME skipComponentGovernanceDetection=true -o table

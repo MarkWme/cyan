@@ -41,4 +41,4 @@ stages:
           #
           # Deploy client applications to blue / green deployments
           #
-          helm install -n $DEPLOYMENT_NAME ${DEPLOYMENT_NAME}-client-go-production deploy/charts/client-go --set apiServerURL=http://$API_SERVER_CANARY,image.repository=${ACR_NAME}.azurecr.io/clientgo
+          helm install -n $DEPLOYMENT_NAME ${DEPLOYMENT_NAME}-client-go-production deploy/charts/client-go --set apiServerURL=http://$API_SERVER_URL_CANARY,image.repository=${ACR_NAME}.azurecr.io/clientgo
