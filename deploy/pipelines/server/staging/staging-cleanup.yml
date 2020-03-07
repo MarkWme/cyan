@@ -10,7 +10,7 @@ variables:
   
 stages:
 - stage: Deploy
-  displayName: Setup Staging Blue / Green Environment
+  displayName: Clean up Staging Blue / Green Environment
 
   jobs:
   - job: Deploy
