@@ -1,6 +1,22 @@
-# Cyan API Server and Applications
+# Cyan: Demonstrating Blue / Green and Canary Deployments
 
-This repository contains a simple API server that returns a JSON payload when a GET is performed against the /api/getVersion endpoint. The payload is simply application version information. There are three client applications, written in Go, Node.js and Python, that hit the endpoint of the server once per second and output the payload returned, or "Error" if there is a problem connecting.
+This repository contains artefacts that simplify the process of setting up and running a demonstration of blue / green and canary deployments on a Kubernetes cluster. It includes:
+
+- A setup script for configuring variable groups in Azure DevOps
+- Azure Pipelines YAML files for setting up, demonstrating and then cleaning up.
+- A server application to deploy and update (see note below on where to obtain this)
+- Client applications
+
+### Pre-requisites
+
+You will need
+
+- An AKS (Azure Kubernetes Service) instance.
+- An Ingress controller. Currently, Azure Application Gateway Ingress Controller and nginx are supported. For Canary deployments, only nginx is supported.
+- An Azure DevOps instance.
+- The SimpleAPI application available from here - https://github.com/MarkWme/SimpleAPI
+
+The Simple API server application returns a JSON payload when a GET is performed against the /api/getVersion endpoint. The payload is application version information. You can easily simulate the process of releasing a new version of an application by updating the version number. There are three client applications, written in Go, Node.js and Python, that hit the endpoint of the server once per second and output the payload returned, or "Error" if there is a problem connecting.
 
 These applications can be used for simple testing of a blue / green / canary deployment scenario. By deploying and running the client applications, they will continually poll the endpoint. You can modify the version information returned by the endpoint to simulate deployment of a new version of the server application and then experiment with different ways of deploying, testing and releasing the new application.
 
