@@ -19,7 +19,7 @@ variables:
   imageRepository: 'simpleapi'
   containerRegistry: 'pcreuwcore.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/server/Dockerfile'
-  tag: '$(Build.SourceVersion)'
+  tag: '$(Build.BuildId)'
   
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
