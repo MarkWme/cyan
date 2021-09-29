@@ -9,6 +9,10 @@ RUN go install -v ./...
 RUN ls -al
 RUN ls -al ..
 RUN ls -al /
+RUN ls -al /go
+RUN ls -al ../app
+RUN ls -al /go/bin
+RUN ls -al /go/bin/app
 
 #final stage
 FROM alpine:latest
