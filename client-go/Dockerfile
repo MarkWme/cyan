@@ -6,6 +6,7 @@ COPY . .
 RUN apk add --no-cache git
 RUN go get -d -v ./...
 RUN go install -v ./...
+RUN ls -al
 
 #final stage
 FROM alpine:latest
