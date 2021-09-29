@@ -12,11 +12,11 @@ RUN ls -al /
 RUN ls -al /go
 RUN ls -al ../app
 RUN ls -al /go/bin
-RUN ls -al /go/bin/app
+RUN ls -al /go/bin/cyan
 
 #final stage
 FROM alpine:latest
 RUN apk --no-cache add ca-certificates
-COPY --from=builder /go/bin/app /app
+COPY --from=builder /go/bin/cyan /app
 ENTRYPOINT ./app
 LABEL Name=client-go Version=1.0.0
